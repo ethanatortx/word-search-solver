@@ -1,6 +1,9 @@
 
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include <cctype>
+#include <iostream>
+#include "error.h"
 #include "wordSearch.h"
 
 wordSearch::wordSearch(unsigned r, unsigned c)
@@ -17,67 +20,78 @@ wordSearch::wordSearch(charTable* ctbl)
 	word_table = ctbl;
 }
 
-bool wordSearch::check(const std::string& word) const
+bool wordSearch::search(const std::string& inpWord) const
 {
-	unsigned p, q, i, k;
+	std::string word;
+	for(auto& c : inpWord)
+	{
+		if( std::isupper((int)c) )
+			word.append(1, c);
+		else if( std::islower((int)c) )
+			word.append(1, std::toupper(c) );
+		else
+			std::cout << c << ' ';
+	}
+	int p, q, i, k;
+	
+	double precx, precy;
 	int x, y;
+
+	int count = 0;
 	for(p = 0; p < word_table->rows(); ++p)
 	{
 		for(q = 0; q < word_table->columns(); ++q)
 		{
 			if(word_table->at(p, q) == word[0])
 			{
+				std::cout << "Pass " << (++count) << "...\n";
+				bool found;
 				for(k = 0; k < 8; ++k)
 				{
-					x = std::cos(k*(M_PI / 4));
-					y = std::sin(k*(M_PI / 4));
-					
-					if(x < 0)
-						x = std::floor(x);
-					else if(x > 0)
-						x = std::ceil(x);
-					if(y < 0)
-						y = std::floor(y);
-					else if(y > 0)
-						y = std::ceil(y);
-
-					if(( (p + x) >= 0 && (p + x) < word_table->rows()) && 
-						((q + y) >= 0 && (q + y) < word_table->columns()))
+					//std::cout << "Direction of check: " << (k) << '\n';
+					for(i = 1; i < word.size(); ++i)
 					{
-						if(word_table->at(p + x, q + y) == word[1])
+						precx = std::cos(k*(M_PI / 4));
+						precy = std::sin(k*(M_PI / 4));
+
+
+						if(precx < 0.0)
+							x = (int)std::floor(precx) * (i);
+						else if(precx > 0.0)
+							x = (int)std::ceil(precx) * (i);
+						if(precy < 0.0)
+							y = (int)std::floor(precy) * (i);
+						else if(precy > 0.0)
+							y = (int)std::ceil(precy) * (i);
+						std::cout << "doub x: " << precx << " doub y: " << precy << '\n';
+						std::cout << "int x: " << x << " int y: " << y << "\n\n";
+
+						if((((p + x) < 0) || ((p + x) >= word_table->rows())) || 
+							(((q + y) < 0) || ((q + y) >= word_table->columns())))
 						{
-							for(i = 1; i < word.size(); ++i)
-							{
-								x = std::cos(k*(M_PI / 4));
-								y = std::sin(k*(M_PI / 4));
-								
-								if(x < 0)
-									x = std::floor(x);
-								else if(x > 0)
-									x = std::ceil(x);
-								if(y < 0)
-									y = std::floor(y);
-								else if(y > 0)
-									y = std::ceil(y);
-								
-								if(( (p + x) >= 0 && (p + x) < word_table->rows()) && 
-									((q + y) >= 0 && (q + y) < word_table->columns()))
-								{
-									
-								}
-							}
+							found = 0;
+							break;
 						}
-
+						else if(word_table->at((p + x), (q + y)) != word[i])
+						{
+							found = 0;
+							break;
+						}
+						else
+						{
+							found = 1;
+						}
 					}
+					if(found == 1)
+						return true;
 				}
-
-				
 			}
 		}
 	}
+	return false;
 }
 
-charTable& table() const
+charTable& wordSearch::table() const
 { return (*word_table); }
 
 wordSearch* constructWS(unsigned&& r, unsigned&& c, std::string* word, unsigned wCount)

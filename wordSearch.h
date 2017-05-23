@@ -7,11 +7,12 @@
 
 class wordSearch
 {
+public:
 	wordSearch(unsigned, unsigned);
-	wordSearch(unsigned, unsigned, const char**);
+	wordSearch(const char**, unsigned, unsigned);
 	wordSearch(charTable*);
 
-	bool check(const std::string&) const;
+	bool search(const std::string&) const;
 	charTable& table() const;
 
 private:
