@@ -9,7 +9,7 @@ class wordSearch
 {
 public:
 	wordSearch(unsigned, unsigned);
-	wordSearch(const char**, unsigned, unsigned);
+	wordSearch(const char*, unsigned, unsigned);
 	wordSearch(charTable*);
 
 	bool search(const std::string&) const;

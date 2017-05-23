@@ -7,7 +7,7 @@ class charTable
 {
 public:
 	charTable(unsigned r, unsigned c);
-	charTable(const char** tbl, unsigned r, unsigned c);
+	charTable(const char* str, unsigned r, unsigned c);
 	charTable(const charTable& tbl);
 
 	friend bool operator==(const charTable&, const charTable&);

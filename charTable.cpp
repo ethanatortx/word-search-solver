@@ -1,6 +1,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <cctype>
 #include "typeDef.h"
 #include "charTable.h"
 #include "error.h"
@@ -62,7 +63,7 @@ charTable::charTable(unsigned r, unsigned c):
 	}
 }
 
-charTable::charTable(const char** tbl, unsigned r, unsigned c):
+charTable::charTable(const char* str, unsigned r, unsigned c):
 	_rows(r), _columns(c)
 {
 	arr = new char*[_rows];
@@ -74,16 +75,15 @@ charTable::charTable(const char** tbl, unsigned r, unsigned c):
 	for(p = 0; p < _rows; ++p)
 		for(q = 0; q < _columns; ++q)
 		{
-			if( ((int)(tbl[p][q]) >= 65 && (int)(tbl[p][q]) <= 90) ||
-				((int)(tbl[p][q]) >= 97 && (int)(tbl[p][q]) <= 122) )
-				arr[p][q] = tbl[p][q];
+			if(std::isalpha((int)(str[q + (p * _rows)])))
+				arr[p][q] = str[q + (p * _rows)];
 			else
 				throw invalid_character();
 		}
 	#else
 	for(p = 0; p < _rows; ++p)
 		for(q = 0; q < _columns; ++q)
-			arr[p][q] = tbl[p][q];
+			arr[p][q] = str[q + (p * _rows)];
 	#endif
 }
 

@@ -20,7 +20,7 @@ struct invalid_character:
 {
 	void format_error_message() const
 	{
-		std::snprintf(error_message_buffer, sizeof(error_message_buffer),
+		snprintf(error_message_buffer, sizeof(error_message_buffer),
 			"Special characters not allowed in table.");
 	}
 };

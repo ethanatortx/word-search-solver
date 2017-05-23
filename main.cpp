@@ -44,6 +44,7 @@ int main()
 			JUGGASEASHELLQDQAFVS
 			USSHELBYALEXANDRANKT
 			OPSUNSCREENWUMBRELLA
+
 		words:
 			ATLANTIC OCEAN; LIFEGUARD; SHOVEL; BATHING SUITS;
 			MINI GOLF; SOUVENIRS; BEACH TOWEL; MYRTLE BEACH;
@@ -58,7 +59,7 @@ int main()
 	#ifdef ONLY_ALPHA_CHAR
 	std::cout << "only alpha characters will be accepted...\n";
 	#endif
-	std::cout << "rows? "; std::cin >> r;
+	/*std::cout << "rows? "; std::cin >> r;
 	std::cout << "columns? "; std::cin >> c;
 	charTable ctbl(r, c);
 	for(p = 0; p < r; ++p){
@@ -67,22 +68,28 @@ int main()
 			std::cin >> a;
 			ctbl.set(a, p, q);
 		}
-	}
-	
-	wordSearch ws(&ctbl);
+	}*/
+
+	r = 20;
+	c = 20;
+	const char* str = "VEVDBSNIHPLODLEVOHSJFNBVRGVSOUVENIRSRKEELIAQCEYRHCAEBELTRYMLILTKIAIDELTSACDNASZLAEHLWRRPENIHSNUSXPRYPRIAAWEIGDRAOBFRUSLFLONWTAKVBNDEEWAESDAIEHGDELTRIBIFLIPFLOPSWSSRRISLAREHVLOOPBTHOSUASCLFAPYASXASWCSSTEIOLEDIENHZNIUCISEEHSTBICMVFWTSARFGCEVOCSSQDRGLPEKIALECSVETAABOEEONNNGGCLTSBAFYELJJXAGHBDRUGOPAOWIDBGGVRMTAOBLIASCSFRLNCNFLOGINIMATGRXEYCTAJUGGASEASHELLQDQAFVSUSSHELBYALEXANDRANKTOPSUNSCREENWUMBRELLA";
+
+	wordSearch ws(str, r, c);
 	ws.table().print();
 	std::cout << "\nSearch for word? (y/n) "; std::cin >> a;
 	std::string s;
 	while((a == 'y') || (a == 'Y'))
 	{
-		std::cin >> s;
+		do {
+			std::getline(std::cin, s);
+		} while (s.length() < 2);
+
 		if(ws.search(s) == 1)
 			std::cout << "Word found!\n";
 		else
 			std::cout << "Word not found.\n";
 		std::cout << "Search again? (y/n) "; std::cin >> a;
 	}
-
 
 	return 0;
 }
